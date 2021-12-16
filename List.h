@@ -13,20 +13,19 @@ template <typename T> class LinkedList {
 private:
 
     struct Node {
-        T data; // äàííûå
-        Node* next = nullptr; // óêàçàòåëü íà ñëåäóþùèé ýëåìåíò
+        T data;
+        Node* next = nullptr;
     };
 
-    Node* head = nullptr; // óêàçàòåëü íà ïåðâûé ýëìåíò, ïî óìîë÷àíèþ nullptr
-    int length = 0; // äëèíà ñïèñêà, ïî óìîë÷àíèþ 0
+    Node* head = nullptr;
+    int length = 0;
 
 public:
-    // ïóñòîé êîíñòðóêòîð, length = 0
+
     LinkedList() : length(0) {}
-    // ïóñòîé êîíñòðóêòîð îïðåäåë¸ííîãî ðàçìåðà
+
     LinkedList(int length) : LinkedList() {
         if (length < 0) throw std::length_error(LL_NEGATIVE_SIZE_MESSAGE);
-        // îáðàáîòêà èñêëþ÷åíèÿ
 
         Node** tmp = &(this->head);
         for (int i = 0; i < length; i++) {
@@ -36,7 +35,6 @@ public:
         }
         this->length = length;
     }
-    // Êîïèðîâàòü ýëåìåíòû èç ïåðåäàííîãî ìàññèâà
     LinkedList(T* datas, int length) : LinkedList() {
         if (length < 0) throw std::length_error(LL_NEGATIVE_SIZE_MESSAGE);
 
@@ -49,7 +47,6 @@ public:
 
         this->length = length;
     }
-    // Êîïèðóþùèé êîíñòðóêòîð
     LinkedList(const LinkedList<T>& list) {
         Node* ptr = list.head;
         Node** newPtr = &(this->head);
@@ -63,7 +60,6 @@ public:
 
         this->length = list.length;
     }
-    // äåñòðóêòîð
     virtual ~LinkedList() {
         Node* ptr = this->head;
         Node* next;
@@ -75,13 +71,11 @@ public:
         this->length = 0;
     }
 
-    //Ïîëó÷èòü ïåðâûé ýëåìåíò â ñïèñêå
     T getFirst() const {
         if (this->length == 0) throw std::length_error(LL_ZERO_SIZE_MESSAGE);
 
         return this->head->data;
     }
-    // Ïîëó÷èòü ïîñëåäíèé ýëåìåíò â ñïèñêå
     T getLast() const {
         if (this->length == 0) throw std::length_error(LL_ZERO_SIZE_MESSAGE);
 
@@ -89,7 +83,7 @@ public:
         while (ptr->next != nullptr) ptr = ptr->next;
         return ptr->data;
     }
-    // Ïîëó÷èòü ýëåìåíò ïî èíäåêñó
+
     T get(int index) const {
         if ((index < 0) || (index >= this->length)) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
         Node* ptr;
@@ -100,7 +94,6 @@ public:
         return ptr->data;
     }
 
-    // Èçìåíèòü ýëåìåíò ïî èíäåêñó
     void set(const T& data, int index) {
         if (index < 0 || index >= this->length) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
         Node* ptr;
@@ -111,8 +104,7 @@ public:
         ptr->data = data;
     }
 
-    // Ïîëó÷èòü ñïèñîê èç âñåõ ýëåìåíòîâ, ñ startIndex ïî endIndex (âêëþ÷èòåëüíî)
-    LinkedList<T>* getSublist(int start, int end) const { //end excluding
+    LinkedList<T>* getSublist(int start, int end) const {
         if (start < 0 || start >= this->length) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
         if (end < 0 || end >= this->length) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
         if (start > end) throw std::logic_error("Quack! End must be not less than start.");
@@ -136,10 +128,8 @@ public:
         return newList;
     }
 
-    // Ïîëó÷èòü äëèíó ñïèñêà
     int getLength() const { return this->length; }
 
-    //Äîáàâëÿåò ýëåìåíò â êîíåö ñïèñêà
     void append(const T& data) {
         Node** ptr = &(this->head);
         while (*ptr != nullptr) ptr = &((*ptr)->next);
@@ -150,7 +140,6 @@ public:
         this->length++;
     }
 
-    // Äîáàâëÿåò ýëåìåíò â íà÷àëî ñïèñêà
     void prepend(const T& data) {
 
         Node* ptr = new Node{ data, this->head };
@@ -159,43 +148,30 @@ public:
         this->length++;
     }
 
-    /*bool find(const T& data) {
-        Node* ptr = this->head;
-        while (ptr != nullptr) {
-            if (ptr->data == data) return true;
-            ptr = ptr->next;
-        }
-        return false;
-    }*/
 
-    // óäàëåíèå ïî èíäåêñó
     void remove(int index) {
         if (index < 0 || index >= this->length) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
 
-        // ýëåìåíò, ñëåäóþùèé äëÿ êîòîðîãî - íà÷àëî ñïèñêà
         Node preHead = { this->head->data, this->head };
         Node* ptr;
 
-        // äîõîäèì äî íóæíîãî íàì (êàê ñëåäóþùåãî)
         {
             int i = 0;
             for (i = 0, ptr = &preHead; i < index; i++, ptr = ptr->next);
         }
 
-        Node* tmp = ptr->next; // çàïîìèíàåì
-        ptr->next = ptr->next->next; // ñäâèãàåì ñïèñîê
-        delete tmp; // óäàëÿåì
+        Node* tmp = ptr->next;
+        ptr->next = ptr->next->next;
+        delete tmp;
 
-        this->head = preHead.next; // â ñëó÷àå åñëè áûë óäàëåí ïåðâûé ýëåìåíò
+        this->head = preHead.next;
 
-        this->length--; // íå çàáûâàåì èçìåíèòü ðàçìåð ñïèñêà
+        this->length--;
     }
 
-    // Âñòàâëÿåò ýëåìåíò â çàäàííóþ ïîçèöèþ
     void insert(const T& data, int index) {
         if (index < 0 || index > this->length) throw std::out_of_range(LL_INDEX_OUT_OF_RANGE_MESSAGE);
 
-        // àíàëîãè÷íî remove, òîëüêî
         Node preHead = { this->head->data, this->head };
         Node* ptr;
 
@@ -204,30 +180,26 @@ public:
             for (i = 0, ptr = &preHead; i < index; i++, ptr = ptr->next);
         }
 
-        ptr->next = new Node{ data, ptr->next }; //ñîçäàåì è âñòàâëÿåì íîâûé ýëåìåíò ñïèñêà
+        ptr->next = new Node{ data, ptr->next };
         this->head = preHead.next;
 
-        this->length++; // óâåëè÷èâàåì äëèíó
+        this->length++;
     }
 
-    //Ñöåïëÿåò äâà ñïèñêà
     LinkedList<T>* concat(const LinkedList<T>& list) const {
         Node* ptr1 = this->head;
         Node* ptr2 = list.head;
 
         LinkedList<T>* newList = new LinkedList<T>();
         Node** ptr = &(newList->head);
-        // äîáàâëÿåì ïåðâûé ñïèñîê
         while (ptr1 != nullptr) {
-            *ptr = new Node{ //ñîçäà¸ì ýëåìåíò
+            *ptr = new Node{
                     ptr1->data,
                     ptr1->next
             };
-            // ïåðåõîäèì íà ñëåäóþùóþ èòåðàöèþ
-            ptr1 = ptr1->next; // â ïåðâîì ñïèñêå
-            ptr = &((*ptr)->next); // â ïîëó÷àåìîì ñïèñêå
+            ptr1 = ptr1->next;
+            ptr = &((*ptr)->next);
         }
-        // äîáàâëÿåì âòîðîé ñïèñîê (ptr = nullptr), àíàëîãè÷íî
         while (ptr2 != nullptr) {
             *ptr = new Node{
                     ptr2->data,
@@ -238,11 +210,10 @@ public:
             ptr = &((*ptr)->next);
         }
 
-        newList->length = this->length + list.length; // íå çàáûâàåì óêàçûâàòü ðàçìåð
+        newList->length = this->length + list.length;
         return newList;
     }
 
-    // ñðàâíåíèå ñïèñêîâ
     bool operator==(const LinkedList<T>& list) const {
         if (this->length != list.length) return false;
 
