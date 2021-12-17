@@ -280,7 +280,7 @@ public:
         return path;
     }
 
-    Pair<DynamicArray<int> *, int> pathAndLength(int ver1, int ver2) {
+    Pair<DynamicArray<int> *, int> pathAndLengthWithWeight(int ver1, int ver2) {
         if (this->shortestPathBFS(ver1, ver2) == nullptr)
             throw std::logic_error(G_INCORRECT_GRAPH_MESSAGE);
         Pair<DynamicArray<int> *, DynamicArray<int> *> tmp = pathAndLength(ver1);

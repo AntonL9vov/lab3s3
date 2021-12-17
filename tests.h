@@ -145,13 +145,6 @@ void t_queue() {
     cout << "Класс Queue (тип INT)" << endl;
 
     cout << "	КОНСТРУКТОР" << endl;
-    //Queue<int>* queue = nullptr;
-    /*cout << "	Длина = -5." << endl;
-    list = ll_create_by_length(-5);
-    cout << "	Длина = 0." << endl;
-    list = ll_create_by_length(0);
-    cout << "	Длина = 10." << endl;
-    list = ll_create_by_length(10);*/
 
     Queue<int>* queue = new Queue<int>();
     for (int i = 0; i < 15; i++)
@@ -164,7 +157,6 @@ void t_queue() {
     cout << "	Массив: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 ]." << endl;
     cout << "	Длина = -1." << endl;
     queue = queue_create_by_array(arr, -1);
-    //print(list);
     cout << "	Длина = 10." << endl;
     queue = queue_create_by_array(arr, 10);
     print(queue);
@@ -175,9 +167,6 @@ void t_queue() {
     cout << "	Копирующий конструктор." << endl;
     Queue<int>* queue2 = new Queue<int>(*queue);
     print(queue);
-    //if (list2 == queue) cout << "	Успешно!" << endl;
-
-
 }
 
 Stack<int>* stack_create_by_array(int* arr, int length) {
@@ -207,13 +196,6 @@ void t_stack() {
     cout << "Класс Stack (тип INT)" << endl;
 
     cout << "	КОНСТРУКТОР" << endl;
-    //Queue<int>* queue = nullptr;
-    /*cout << "	Длина = -5." << endl;
-    list = ll_create_by_length(-5);
-    cout << "	Длина = 0." << endl;
-    list = ll_create_by_length(0);
-    cout << "	Длина = 10." << endl;
-    list = ll_create_by_length(10);*/
 
     Stack<int>* stack = new Stack<int>();
     for (int i = 0; i < 15; i++)
@@ -234,12 +216,6 @@ void t_stack() {
     stack = stack_create_by_array(arr, 20);
     print(stack);
 
-    //cout << "	Копирующий конструктор." << endl;
-    //Stack<int>* stack2 = new Stack<int>(*stack);
-    //print(stack);
-    //if (stack2 == stack) cout << "	Успешно!" << endl;
-
-
 }
 
 void print(DynamicArray<int>* da) {
@@ -257,7 +233,6 @@ void printInfo(Graph* graph) {
         cout << "взвешенный, на ";
     else cout << "НЕ взвешенный, на ";
     cout << graph->getLength() << " вершинах." << endl;
-    //cout << "ГРАФ" << endl;
 }
 Graph* makeGraph(string path) {
 
@@ -265,26 +240,11 @@ Graph* makeGraph(string path) {
     int i, j;
     int w = 1;
 
-    /*cout << "Граф ориентирован?" << endl;
-    cout << "	1 - да;" << endl;
-    cout << "	2 - нет." << endl;
-    cout << "Ваш ответ: ";
-    if (readInt(1, 2) == 1)
-        direct = true;
-    else direct = false;
-    cout << "Граф взвешенный?" << endl;
-    cout << "	1 - да;" << endl;
-    cout << "	2 - нет." << endl;
-    cout << "Ваш ответ: ";
-    if (readInt(1, 2) == 1)
-        weigth = true;
-    else weigth = false;*/
-
     fin.open(path);
     if (fin.is_open())
     {
         bool weigth, direct;
-        fin >> i >> j >> w; // количество вершин, ориентирован либ взвешен ли
+        fin >> i >> j >> w;
         if (j == 1)
             direct = true;
         else direct = false;
@@ -311,11 +271,11 @@ Graph* makeGraph(string path) {
             std::cout << std::endl;
             graph->addEdge(i, j, w);
         }
-        fin.close();     // закрываем файл
+        fin.close();
         return graph;
     }
     else {
-        std::cout << " Кря! Ты облажалась" << std::endl;
+        std::cout << "Что-то не так"<< std::endl;
         return nullptr;
     }
 }
@@ -336,7 +296,6 @@ void print(Graph* graph) {
             cout << i << "( ";
             for (int j = 0; j < graph->get(i)->getEdgesCount(); j++) {
                 cout << graph->get(i)->getEdge(j).getVertex() << " ";
-                //cout << " = " << graph->get(i).getEdge(j).getData();
             }
             cout << ")" << endl;
         }
@@ -381,7 +340,7 @@ void t_graph_shortestPathBFS(Graph* graph) {
     }
     cout << endl;
 }
-void t_graph_dijkstra(Graph* graph) {
+void t_grapPathAndLengthWithWeight(Graph* graph) {
     cout << "КРАТЧАЙШИЙ ПУТЬ с учётом весов" << endl;
     for (int i = 0; i < graph->getLength(); i++) {
         cout << "От вершины " << i << " до " << endl;
@@ -390,7 +349,7 @@ void t_graph_dijkstra(Graph* graph) {
                 cout << "	" << j << ": ";
                 try
                 {
-                    Pair< DynamicArray<int>*, int> res = graph->pathAndLength(i, j);
+                    Pair< DynamicArray<int>*, int> res = graph->pathAndLengthWithWeight(i, j);
                     cout << "(" << res.second << ") ";
                     print(res.first);
                     cout << endl;
@@ -417,7 +376,7 @@ void t_graph_paths(Graph* graph) {
                 cout << "           	";
                 try
                 {
-                    Pair< DynamicArray<int>*, int> res = graph->pathAndLength(i, j);
+                    Pair< DynamicArray<int>*, int> res = graph->pathAndLengthWithWeight(i, j);
                     cout << "(" << res.second << ") ";
                     print(res.first);
                 }
@@ -442,7 +401,7 @@ void t_graph_all(Graph* graph) {
     t_graph_isNeighbor(graph);
     t_graph_BFS(graph);
     t_graph_shortestPathBFS(graph);
-    t_graph_dijkstra(graph);
+    t_grapPathAndLengthWithWeight(graph);
     t_graph_paths(graph);
     t_graph_painting(graph);
 }
@@ -478,13 +437,9 @@ void tests() {
             std::cout << "	(0)ТЕСТЫ" << std::endl;
             std::cout << "1 - ВСЕ ТЕСТЫ;" << std::endl;
             std::cout << "2 - Список;" << std::endl;
-            //std::cout << "2 - задать вместимось страницы (в словах);" << std::endl;
             std::cout << "3 - Очередь;" << std::endl;
             std::cout << "4 - Стек;" << std::endl;
-            //std::cout << "6 - печать страниц до определённой;" << std::endl;
-            //std::cout << "7 - печать страниц после определённой;" << std::endl;
             std::cout << "5 - Граф;" << std::endl;
-            //std::cout << "6 - AI;" << std::endl;
             std::cout << std::endl;
             std::cout << "6 - ВЫХОД." << std::endl;
             std::cout << "ОТВЕТ: ";

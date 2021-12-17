@@ -63,11 +63,11 @@ Graph *printmenu12() {
                 fout << ' ' << choice;
             }
             fout << endl;
-            cout << "	Для завершения ввода ребёр введите 'конец': ";
-            string line;
-            std::getline(cin, line);
+            cout << "	Для завершения ввода ребёр введите -1: ";
+            int a;
+            cin>>a;
             cout << "	__________" << endl << endl;
-            if (line == "конец" || line == "Конец")
+            if (a==-1)
                 break;
         }
         fout.close();
@@ -144,7 +144,7 @@ void printmenu32(Graph *graph) {
                 t_graph_shortestPathBFS(graph);
                 break;
             case 2:
-                t_graph_dijkstra(graph);
+                t_grapPathAndLengthWithWeight(graph);
                 break;
             case 3:
                 t_graph_paths(graph);
